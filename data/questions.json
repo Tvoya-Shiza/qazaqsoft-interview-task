@@ -1,25 +1,139 @@
 {
   "title": "Основы веб-разработки",
-  "timeLimitSec": 300,
+  "timeLimitSec": 480,
   "passThreshold": 0.7,
   "questions": [
     {
       "id": "q1",
       "text": "Какой тег HTML используется для самого крупного заголовка?",
-      "options": ["<title>", "<h6>", "<h1>", "<header>"],
+      "options": [
+        "<title>",
+        "<h6>",
+        "<h1>",
+        "<header>"
+      ],
       "correctIndex": 2
     },
     {
       "id": "q2",
       "text": "Как в CSS задать цвет текста?",
-      "options": ["font-color", "text-color", "color", "font.fill"],
+      "options": [
+        "font-color",
+        "text-color",
+        "color",
+        "font.fill"
+      ],
       "correctIndex": 2
     },
     {
       "id": "q3",
-      "text": "Какой метод используется для HTTP-запроса в браузере (без библиотек)?",
-      "options": ["axios()", "request()", "fetch()", "$.ajax()"],
+      "text": "Какой встроенный API браузера использует промисы для HTTP-запросов?",
+      "options": [
+        "axios()",
+        "XMLHttpRequest",
+        "fetch()",
+        "$.ajax()"
+      ],
       "correctIndex": 2
+    },
+    {
+      "id": "q4",
+      "text": "Какой атрибут делает поле формы обязательным?",
+      "options": [
+        "need",
+        "required",
+        "must",
+        "mandatory"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "q5",
+      "text": "Какой селектор выберет все элементы с классом .item внутри #list?",
+      "options": [
+        "#list .item",
+        ".item #list",
+        "#list > .item",
+        ".list .item"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "id": "q6",
+      "text": "Каков результат выражения Boolean('0') в JavaScript?",
+      "options": [
+        "false",
+        "true",
+        "undefined",
+        "null"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "q7",
+      "text": "Где корректно подключить CSS-файл в HTML-документе?",
+      "options": [
+        "В конце <body>",
+        "В начале <body>",
+        "Внутри <head>",
+        "После </html>"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "q8",
+      "text": "Что делает метод Array.prototype.map?",
+      "options": [
+        "Фильтрует элементы массива",
+        "Мутирует исходный массив",
+        "Возвращает новый массив той же длины",
+        "Сортирует массив"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "q9",
+      "text": "Какой метатег управляет масштабированием страницы на мобильных устройствах?",
+      "options": [
+        "<meta charset>",
+        "<meta viewport>",
+        "<meta device>",
+        "<meta scale>"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "id": "q10",
+      "text": "Как объявить константу в JavaScript?",
+      "options": [
+        "let x",
+        "var x",
+        "const x",
+        "static x"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "q11",
+      "text": "Какое значение по умолчанию у display для <div>?",
+      "options": [
+        "inline",
+        "inline-block",
+        "block",
+        "flex"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "id": "q12",
+      "text": "Какой правильный порядок специфичности CSS (от меньшей к большей)?",
+      "options": [
+        "ID, класс, тег",
+        "Тег, класс, ID",
+        "Класс, тег, ID",
+        "Тег, ID, класс"
+      ],
+      "correctIndex": 1
     }
   ]
 }
