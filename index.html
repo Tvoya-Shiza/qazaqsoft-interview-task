@@ -8,7 +8,14 @@
   </head>
   <body>
     <main class="container" aria-live="polite">
-      <header class="header">
+      
+      <section id="start-section" class="card">
+        <h2>Добро пожаловать в тест!</h2>
+        <p>Этот тест состоит из вопросов по основам веб-разработки. У вас будет 5 минут для его прохождения. Удачи!</p>
+        <button id="btn-start" class="btn btn-primary" type="button">Начать тест</button>
+      </section>
+
+      <header class="header hidden" id="header">
         <h1 id="quiz-title">Загрузка…</h1>
         <div class="meta">
           <div id="progress" aria-label="Прогресс теста">Вопрос — / —</div>
@@ -18,7 +25,7 @@
 
       <section
         id="question-section"
-        class="card"
+        class="card hidden"
         aria-labelledby="question-text"
       >
         <div id="question-text" class="question-text">Загрузка вопроса…</div>
@@ -30,7 +37,10 @@
         ></form>
       </section>
 
-      <nav class="actions">
+      <nav class="actions hidden" id = "navbar">
+        <div id = "question-id-container">
+          
+        </div>
         <button id="btn-prev" class="btn" type="button" aria-label="Назад">
           Назад
         </button>
@@ -57,6 +67,9 @@
       <section id="result-section" class="card hidden" aria-live="polite">
         <h2>Результат</h2>
         <p id="result-summary">—</p>
+        <div id="topic-wise-summary">
+        <!--по каждой теме -->
+        </div>
         <div class="actions">
           <button id="btn-review" class="btn" type="button">
             Посмотреть ответы
