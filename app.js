@@ -24,19 +24,29 @@ class Question {
 // ========== Сервисы ==========
 class StorageService {
   static saveState(state) {
-    // TODO: сериализовать state и сохранить в localStorage
-    // Пример: localStorage.setItem(STORAGE_KEYS.STATE, JSON.stringify(state));
-    throw new Error("Not implemented: StorageService.saveState");
+    try {
+      localStorage.setItem(STORAGE_KEYS.STATE, JSON.stringify(state));
+    } catch(e) {
+      throw new Error("StorageService.saveState: ", e);
+    }
   }
 
   static loadState() {
-    // TODO: прочитать и распарсить состояние, вернуть объект или null
-    throw new Error("Not implemented: StorageService.loadState");
+    try {
+      const raw = localStorage.getItem(STORAGE_KEYS.STATE);
+      if(raw) return localStorage.getItem(STORAGE_KEYS.STATE);
+      return null;
+    } catch(e) {
+      throw new Error("StorageService.loadState: ", e);
+    }
   }
 
   static clear() {
-    // TODO: очистить сохранённое состояние
-    throw new Error("Not implemented: StorageService.clear");
+    try {
+      return localStorage.removeItem(STORAGE_KEYS.STATE)
+    } catch(e) {
+      throw new Error("StorageService.clear: ", e);
+    }
   }
 }
 
@@ -65,52 +75,60 @@ class QuizEngine {
 
   /** @param {number} index */
   goTo(index) {
-    // TODO: валидировать границы и сменить текущий индекс
-    throw new Error("Not implemented: QuizEngine.goTo");
+    this.currentIndex = index
   }
 
   next() {
-    // TODO: перейти к следующему вопросу, если возможно
-    throw new Error("Not implemented: QuizEngine.next");
+    if(this.currentIndex + 1 < this.length) {
+      this.goTo(this.currentIndex + 1)
+    }
   }
 
   prev() {
-    // TODO: перейти к предыдущему вопросу, если возможно
-    throw new Error("Not implemented: QuizEngine.prev");
+    if(this.currentIndex - 1 >= 0) {
+      this.goTo(this.currentIndex - 1)
+    }
   }
 
   /** @param {number} optionIndex */
   select(optionIndex) {
-    // TODO: сохранить выбор пользователя для текущего вопроса
-    throw new Error("Not implemented: QuizEngine.select");
+    this.answers[this.currentIndex] = optionIndex
   }
 
   getSelectedIndex() {
-    // TODO: вернуть выбранный индекс для текущего вопроса (или undefined)
-    throw new Error("Not implemented: QuizEngine.getSelectedIndex");
+    if(this.answers[this.currentIndex]) return this.answers[this.currentIndex]
+    return undefined;
   }
 
   tick() {
-    // TODO: декремент таймера; если 0 — завершить тест
-    throw new Error("Not implemented: QuizEngine.tick");
+    if(this.isFinished) return;
+
+    if(this.remainingSec > 0) this.remainingSec -= 1;
+
+    if(this.remainingSec === 0 && !this.isFinished) {
+      stopTimer();
+      return renderResult(this.finish())
+    }
   }
 
   finish() {
-    // TODO: зафиксировать завершение и вернуть сводку результата
-    // return { correct: number, total: number, percent: number, passed: boolean }
-    throw new Error("Not implemented: QuizEngine.finish");
+    this.isFinished = true
+    var correct = 0;
+    for(var i = 0; i < this.length; i++) {
+      if(this.questions[i].correctIndex === this.answers[i]) correct++;
+    }
+    return { correct: correct, total: this.length, percent: correct / this.length, passed: correct / this.length >= 0.7 ? true : false}
   }
 
-  /** Восстановление/выгрузка состояния для localStorage */
   toState() {
-    // TODO: вернуть сериализуемый снимок состояния
-    throw new Error("Not implemented: QuizEngine.toState");
+    return this.answers;
   }
 
   /** @param {any} state */
   static fromState(quiz, state) {
-    // TODO: создать двигатель на базе сохранённого состояния
-    throw new Error("Not implemented: QuizEngine.fromState");
+    engine = new QuizEngine(quiz);
+    engine.answers = JSON.parse(state)
+    return engine;
   }
 }
 
@@ -155,11 +173,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function loadQuiz() {
-  // Загружаем JSON с вопросами
   const res = await fetch(DATA_URL);
   /** @type {QuizDTO} */
   const data = await res.json();
-  // Простейшая валидация формата (можно расширить)
   if (!data?.questions?.length) {
     throw new Error("Некорректные данные теста");
   }
@@ -175,7 +191,6 @@ function startTimer() {
       persist();
       renderTimer();
     } catch (e) {
-      // До реализации tick() попадём сюда — это нормально для шаблона.
       stopTimer();
     }
   }, 1000);
@@ -203,6 +218,7 @@ function bindEvents() {
 
   els.btnFinish.addEventListener("click", () => {
     const summary = safeCall(() => engine.finish());
+    console.log(summary)
     if (summary) {
       stopTimer();
       renderResult(summary);
@@ -318,7 +334,11 @@ function renderResult(summary) {
 function persist() {
   try {
     const snapshot = engine.toState?.();
-    if (snapshot) StorageService.saveState(snapshot);
+    console.log("Persist snapshot: ", snapshot)
+    if (snapshot) {
+      StorageService.saveState(snapshot);
+
+    }
   } catch {
     /* noop в шаблоне */
   }
